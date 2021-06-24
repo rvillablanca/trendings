@@ -2,8 +2,8 @@ package command
 
 import (
 	"bufio"
+	"io"
 	"log"
-	"os"
 )
 
 const (
@@ -23,14 +23,15 @@ type DataStore interface {
 type Commander struct {
 	store  DataStore
 	engine SearchEngine
+	reader io.Reader
 }
 
-func NewCommander(store DataStore, engine SearchEngine) *Commander {
-	return &Commander{store: store, engine: engine}
+func NewCommander(store DataStore, engine SearchEngine, reader io.Reader) *Commander {
+	return &Commander{store: store, engine: engine, reader: reader}
 }
 
 func (c *Commander) Listen() error {
-	scanner := bufio.NewScanner(os.Stdin)
+	scanner := bufio.NewScanner(c.reader)
 	for scanner.Scan() {
 		cmd := scanner.Text()
 		switch cmd {

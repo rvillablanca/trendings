@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"trendings/command"
 	"trendings/server"
 	"trendings/trends"
@@ -19,7 +20,7 @@ func main() {
 	}()
 
 	log.Println("creating commander")
-	commander := command.NewCommander(srv, &trends.Trends24{})
+	commander := command.NewCommander(srv, &trends.Trends24{}, os.Stdin)
 	cmdCh := make(chan error)
 	go func() {
 		log.Println("listening commands")
