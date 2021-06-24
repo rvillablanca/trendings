@@ -9,9 +9,9 @@ var (
 type storeMock struct {
 }
 
-func (s storeMock) AddSearchResult(location string, hashtags []string) {}
+func (s storeMock) PublishResult(location string, hashtags []string) {}
 
-func (s storeMock) Clean() {}
+func (s storeMock) CleanAll() {}
 
 type engineMock struct {
 }

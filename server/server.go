@@ -33,11 +33,11 @@ func (s *Server) readData(w http.ResponseWriter, r *http.Request) {
 	jsonData(w, http.StatusOK, resp)
 }
 
-func (s *Server) AddSearchResult(location string, hashtags []string) {
+func (s *Server) PublishResult(location string, hashtags []string) {
 	s.data.Store(location, hashtags)
 }
 
-func (s *Server) Clean() {
+func (s *Server) CleanAll() {
 	s.data.Range(func(key, value interface{}) bool {
 		s.data.Delete(key)
 		return true

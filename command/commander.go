@@ -11,23 +11,23 @@ const (
 	cleanCommand = "clean"
 )
 
-type SearchEngine interface {
+type TwitterEngine interface {
 	Search(location string) ([]string, error)
 }
 
-type DataStore interface {
-	AddSearchResult(location string, hashtags []string)
-	Clean()
+type Publisher interface {
+	PublishResult(location string, hashtags []string)
+	CleanAll()
 }
 
 type Commander struct {
-	store  DataStore
-	engine SearchEngine
+	store  Publisher
+	engine TwitterEngine
 	reader io.Reader
 }
 
-func NewCommander(store DataStore, engine SearchEngine, reader io.Reader) *Commander {
-	return &Commander{store: store, engine: engine, reader: reader}
+func NewCommander(publisher Publisher, engine TwitterEngine, reader io.Reader) *Commander {
+	return &Commander{store: publisher, engine: engine, reader: reader}
 }
 
 func (c *Commander) Listen() error {
@@ -39,7 +39,7 @@ func (c *Commander) Listen() error {
 			return nil
 
 		case cleanCommand:
-			c.store.Clean()
+			c.store.CleanAll()
 
 		default:
 			go func() {
@@ -58,8 +58,7 @@ func (c *Commander) Listen() error {
 					cmd = "Worldwide"
 				}
 
-				log.Printf("Location: %s => %v", cmd, hashtags)
-				c.store.AddSearchResult(cmd, hashtags)
+				c.store.PublishResult(cmd, hashtags)
 			}()
 		}
 	}
