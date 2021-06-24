@@ -26,7 +26,7 @@ func (t *Trends24) Search(location string) ([]string, error) {
 	}
 
 	var hashtags []string
-	doc.Find("div#trend-list div.trend-card").First().Find("ol li").Each(func(i int, selection *goquery.Selection) {
+	doc.Find("div#trend-list div.trend-card").First().Find("ol li a").Each(func(i int, selection *goquery.Selection) {
 		hashtags = append(hashtags, selection.Text())
 	})
 
