@@ -21,13 +21,13 @@ type Publisher interface {
 }
 
 type Commander struct {
-	store  Publisher
-	engine TwitterEngine
-	reader io.Reader
+	publisher Publisher
+	engine    TwitterEngine
+	reader    io.Reader
 }
 
 func NewCommander(publisher Publisher, engine TwitterEngine, reader io.Reader) *Commander {
-	return &Commander{store: publisher, engine: engine, reader: reader}
+	return &Commander{publisher: publisher, engine: engine, reader: reader}
 }
 
 func (c *Commander) Listen() error {
@@ -39,7 +39,7 @@ func (c *Commander) Listen() error {
 			return nil
 
 		case cleanCommand:
-			c.store.CleanAll()
+			c.publisher.CleanAll()
 
 		default:
 			go func() {
@@ -58,7 +58,7 @@ func (c *Commander) Listen() error {
 					cmd = "Worldwide"
 				}
 
-				c.store.PublishResult(cmd, hashtags)
+				c.publisher.PublishResult(cmd, hashtags)
 			}()
 		}
 	}

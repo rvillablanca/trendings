@@ -15,6 +15,8 @@ func TestCommander_Listen(t *testing.T) {
 	}{
 		{"invalid", badReaderMock{}, true},
 		{"valid country", strings.NewReader("chile"), false},
+		{"comando exit", strings.NewReader("exit"), false},
+		{"comando clean", strings.NewReader("clean"), false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
